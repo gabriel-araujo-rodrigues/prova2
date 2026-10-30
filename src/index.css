@@ -1,0 +1,330 @@
+:root {
+  --cobalto: #17237a;
+  --cobalto-fundo: #0d1550;
+  --cobalto-claro: #2a3fd0;
+  --luz: #ffc83d;
+  --tinta: #101640;
+  --papel: #f3efe2;
+  --coral: #c92a35;
+  --display: 'Anton', Impact, 'Arial Narrow Bold', sans-serif;
+  --corpo: 'Figtree', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--cobalto);
+  background-image: radial-gradient(900px 420px at 50% -80px, #3a56f0 0%, rgba(58, 86, 240, 0) 70%);
+  background-repeat: no-repeat;
+  color: #f4f6ff;
+  font-family: var(--corpo);
+  line-height: 1.5;
+}
+
+/* ---------- Cabeçalho: letreiro de cinema ---------- */
+
+.cabecalho {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  padding: 1.1rem 1.75rem 2.1rem;
+  background: linear-gradient(var(--cobalto-fundo), #131d66);
+  border-bottom: 3px solid var(--luz);
+}
+
+.marca {
+  font-family: var(--display);
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  color: #fff;
+}
+
+/* Duas fileiras de lâmpadas que se alternam: o único movimento da página. */
+.cabecalho::before,
+.cabecalho::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.6rem;
+  height: 12px;
+  background: radial-gradient(circle at center, var(--luz) 0 3.5px, rgba(255, 200, 61, 0) 4.5px) 0 50% / 24px 12px repeat-x;
+  filter: drop-shadow(0 0 4px rgba(255, 200, 61, 0.8));
+  pointer-events: none;
+  animation: piscar 1.6s steps(1) infinite;
+}
+
+.cabecalho::after {
+  background-position: 12px 50%;
+  animation-delay: -0.8s;
+}
+
+@keyframes piscar {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0.3; }
+}
+
+.menu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.menu a {
+  padding: 0.45rem 1rem;
+  border: 2px solid transparent;
+  border-radius: 999px;
+  color: #dfe4ff;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.menu a:hover { border-color: rgba(255, 255, 255, 0.35); }
+.menu a:focus-visible { outline: 3px solid var(--luz); outline-offset: 2px; }
+
+.menu a.active {
+  background: var(--luz);
+  border-color: var(--luz);
+  color: var(--tinta);
+}
+
+/* ---------- Conteúdo ---------- */
+
+.conteudo {
+  max-width: 680px;
+  margin: 2.5rem auto 4rem;
+  padding: 0 1rem;
+  /* A sombra fica aqui porque a máscara do ingresso cortaria um box-shadow. */
+  filter: drop-shadow(0 20px 28px rgba(5, 8, 40, 0.5));
+}
+
+/* O cartão é um ingresso: entalhes laterais e picote logo abaixo do título. */
+.cartao {
+  --corte: 5.25rem;
+  --raio: 13px;
+  --entalhe-esq: radial-gradient(circle var(--raio) at 0 var(--corte), #0000 97%, #000);
+  --entalhe-dir: radial-gradient(circle var(--raio) at 100% var(--corte), #0000 97%, #000);
+  position: relative;
+  padding: 0 1.75rem 1.9rem;
+  background: var(--papel);
+  border-radius: 14px;
+  color: var(--tinta);
+  -webkit-mask: var(--entalhe-esq) left / 51% 100% no-repeat, var(--entalhe-dir) right / 51% 100% no-repeat;
+  mask: var(--entalhe-esq) left / 51% 100% no-repeat, var(--entalhe-dir) right / 51% 100% no-repeat;
+}
+
+.cartao::before {
+  content: '';
+  position: absolute;
+  top: calc(var(--corte) - 1px);
+  left: calc(var(--raio) + 10px);
+  right: calc(var(--raio) + 10px);
+  border-top: 2px dashed rgba(16, 22, 64, 0.3);
+}
+
+.cartao > h1 {
+  display: flex;
+  align-items: center;
+  height: var(--corte);
+  margin: 0 0 1.5rem;
+  font-family: var(--display);
+  font-size: clamp(1.8rem, 5vw, 2.4rem);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  line-height: 1;
+}
+
+.cartao p { margin: 0 0 1rem; }
+.cartao a { color: var(--cobalto-claro); font-weight: 600; }
+
+/* ---------- Lista de filmes (Início) ---------- */
+
+.ingressos {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ingresso {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr auto;
+  align-items: stretch;
+  overflow: hidden;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: inset 0 0 0 2px rgba(16, 22, 64, 0.14);
+  color: var(--tinta);
+  text-decoration: none;
+}
+
+.ingresso .numero {
+  display: grid;
+  place-items: center;
+  padding: 0.9rem 0.5rem;
+  background: var(--luz);
+  border-right: 2px dashed rgba(16, 22, 64, 0.4);
+  font-family: var(--display);
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+.ingresso .titulo-filme {
+  align-self: center;
+  padding: 0.9rem 1rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.ingresso::after {
+  content: '';
+  align-self: center;
+  width: 0.55rem;
+  height: 0.55rem;
+  margin-right: 1.2rem;
+  border-top: 2.5px solid currentColor;
+  border-right: 2.5px solid currentColor;
+  transform: rotate(45deg);
+}
+
+.ingresso:hover { box-shadow: inset 0 0 0 2px var(--tinta); }
+.ingresso:hover .numero { background: var(--tinta); color: var(--luz); }
+.ingresso:focus-visible { outline: 3px solid var(--cobalto-claro); outline-offset: 2px; }
+
+/* ---------- Dados do filme (Ler e Apagar) ---------- */
+
+.detalhes {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  column-gap: 1.5rem;
+  margin: 0;
+}
+
+.detalhes dt,
+.detalhes dd {
+  margin: 0;
+  padding: 0.85rem 0;
+  border-bottom: 2px dotted rgba(16, 22, 64, 0.22);
+}
+
+.detalhes dt {
+  align-self: baseline;
+  color: #4a4f86;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.detalhes dd { font-weight: 600; }
+
+.detalhes dd:nth-of-type(2) {
+  font-family: var(--display);
+  font-size: 1.8rem;
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+/* ---------- Formulários ---------- */
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.formulario label {
+  margin-top: 0.7rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.formulario input {
+  padding: 0.75rem 0.9rem;
+  background: #fff;
+  border: 2px solid rgba(16, 22, 64, 0.25);
+  border-radius: 10px;
+  color: var(--tinta);
+  font: inherit;
+}
+
+.formulario input::placeholder { color: #8a8eb0; }
+
+.formulario input:focus {
+  border-color: var(--cobalto-claro);
+  box-shadow: 0 0 0 4px rgba(42, 63, 208, 0.25);
+  outline: none;
+}
+
+/* ---------- Botões ---------- */
+
+.acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.6rem;
+}
+
+.cartao a.botao { font-weight: 700; }
+
+.botao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.7rem 1.4rem;
+  background: var(--luz);
+  border: 2px solid var(--tinta);
+  border-radius: 999px;
+  box-shadow: 0 4px 0 var(--tinta);
+  color: var(--tinta);
+  font: 700 1rem var(--corpo);
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.08s, box-shadow 0.08s;
+}
+
+.cartao a.botao { color: var(--tinta); }
+
+.botao:hover { transform: translateY(-1px); box-shadow: 0 5px 0 var(--tinta); }
+.botao:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--tinta); }
+.botao:focus-visible { outline: 3px solid var(--cobalto-claro); outline-offset: 3px; }
+.botao:disabled { opacity: 0.6; cursor: wait; transform: none; box-shadow: 0 4px 0 var(--tinta); }
+
+.botao.secundario { background: #fff; }
+
+.botao.perigo,
+.cartao a.botao.perigo { background: var(--coral); color: #fff; }
+
+/* ---------- Mensagens ---------- */
+
+.mensagem.erro {
+  padding: 0.8rem 1rem;
+  background: #fde8e8;
+  border-left: 5px solid var(--coral);
+  border-radius: 8px;
+  color: #7f1d24;
+  font-weight: 600;
+}
+
+/* ---------- Telas pequenas e movimento reduzido ---------- */
+
+@media (max-width: 520px) {
+  .cabecalho { padding: 1rem 1rem 2rem; }
+  .conteudo { margin-top: 1.5rem; }
+  .cartao { --corte: 4.25rem; padding: 0 1.15rem 1.5rem; }
+  .ingresso { grid-template-columns: 3.6rem 1fr auto; }
+  .detalhes { grid-template-columns: 1fr; }
+  .detalhes dt { padding-bottom: 0; border-bottom: 0; }
+  .detalhes dd { padding-top: 0.15rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cabecalho::before,
+  .cabecalho::after { animation: none; opacity: 1; }
+  .botao { transition: none; }
+}
